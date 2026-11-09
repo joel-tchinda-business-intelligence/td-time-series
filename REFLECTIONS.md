@@ -2,17 +2,21 @@
 
 ## 1. Comment vérifier que des données réelles existaient
 Il aurait suffi de lire la documentation de l'API Open-Meteo Air Quality, qui indique le paramètre past_days, ou de faire un seul appel test avec past_days=90 dans le navigateur et de compter les valeurs reçues. C'est quelques minutes de vérification, alors que l'hypothèse fausse a fait construire tout un exercice sur des données inventées. Une hypothèse sur les données disponibles doit être vérifiée avant de concevoir quoi que ce soit autour.
-
+Résultat : la pente est de +0,160 ppm par jour, soit environ +14 ppm sur les 90 jours. Ma prédiction était donc juste. Les valeurs récentes sont bien plus hautes que celles de l'été, ce qui correspond à la fin de la saison.
 ## 2. Ma prédiction pour le CO2 au Mans (avant de lancer)
-Je pense que le CO2 est plutôt en hausse sur les 90 derniers jours. En été, les plantes absorbent beaucoup de CO2, puis en automne elles perdent leurs feuilles et absorbent beaucoup moins, et en plus le chauffage redémarre. Le minimum devrait donc être vers fin septembre, puis remonter.
+Je pense que le CO2 est plutôt en hausse sur les 3 derniers mois. En été, les plantes absorbent beaucoup de CO2, puis en automne elles perdent leurs feuilles et absorbent beaucoup moins, et en plus le chauffage redémarre. Le minimum devrait donc être vers fin septembre, puis remonter.
 
 ## 3. Zéro trou détecté : faut-il supprimer la détection des trous ?
 Non. Si mon exécution n'a aucun trou, ça prouve seulement que la source était complète cette fois-ci, pas qu'elle le sera toujours. L'API peut changer ou tomber en panne, et on pourrait un jour brancher un vrai capteur qui perd des mesures. Sans cette détection, un jour manquant passerait inaperçu et fausserait la moyenne mobile et la tendance. Ce code ne coûte presque rien et protège contre ce cas.
 
 ## 4. Moyenne mobile vs lissage exponentiel
+Mes 5 dernières valeurs brutes sont 449,6 / 459,5 / 470,6 / 463,6 / 454,3 ppm, avec un pic à 470,6. Au jour du pic, le lissage exponentiel est monté à 457,4 alors que la moyenne mobile n'était qu'à 453,5 ; et maintenant que le CO2 redescend, le lissage exponentiel baisse déjà alors que la moyenne mobile continue de monter.
 
 ## 5. Que se passe-t-il si l'appel à l'API échoue ?
 
 ## 6. Jusqu'à combien de jours je fais confiance à la projection
 
+Ma pente est de +0,160 ppm par jour, donc la projection ne monte que d'environ 1 ppm sur 7 jours (de 449,8 à 450,8). Mais dans les vraies données, le CO2 varie de plus de 10 ppm d'un jour à l'autre (de 459,5 à 470,6 en un jour), à cause de la météo : vent, air stagnant, chauffage. En plus, la projection commence à 449,8 alors que la dernière valeur réelle est 454,3, donc elle est déjà décalée dès le premier jour.
+
+Je ne ferais confiance à cette projection que 2 ou 3 jours, et seulement pour dire « le CO2 va rester autour de 450-460 ppm », pas pour la valeur exacte. Au-delà, la météo pèse beaucoup plus que la tendance, et une droite ne peut pas prévoir le changement de saison.
 ## 7. Pourquoi le pipeline marche encore après mon changement
