@@ -13,6 +13,7 @@ Non. Si mon exécution n'a aucun trou, ça prouve seulement que la source était
 Mes 5 dernières valeurs brutes sont 449,6 / 459,5 / 470,6 / 463,6 / 454,3 ppm, avec un pic à 470,6. Au jour du pic, le lissage exponentiel est monté à 457,4 alors que la moyenne mobile n'était qu'à 453,5 ; et maintenant que le CO2 redescend, le lissage exponentiel baisse déjà alors que la moyenne mobile continue de monter.
 
 ## 5. Que se passe-t-il si l'appel à l'API échoue ?
+Si les 4 tentatives échouent, fetch_series.py s'arrête avec une erreur avant d'écrire series.csv, donc le workflow s'arrête aussi : analyze_series.py et le commit ne sont jamais lancés. Les deux fichiers gardent donc les valeurs de la semaine précédente. Le dashboard ne casse pas, il continue d'afficher les anciennes données, mais elles deviennent périmées sans alerte visible. Le seul indice est la date « Data last analyzed » en bas de la page, et la croix rouge dans l'onglet Actions.
 
 ## 6. Jusqu'à combien de jours je fais confiance à la projection
 
